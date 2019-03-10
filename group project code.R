@@ -110,6 +110,8 @@ summary(M6)  # final model
 library(car)
 vif(M6)      # check multicollinearity
 # no multicollinearity across age, famrel, absences, G1, and G2
+library(QuantPsyc)
+lm.beta(M6)  #standardized coefficients,show the most important predictor
 
 ## Interaction model
 
@@ -118,9 +120,9 @@ summary(MInteraction1)
 # There is an interaction between famely relationship and absences
 # perhaps because absences inconsistent is why G1 and G2 does not reflect interaction
 
-MInteraction2=lm(G3~as.factor(age)+famrel+absences+G1+G2+G2*absences+G2*famrel+G1*G2+absences*G1+absences*G2)
+MInteraction2=lm(G3~as.factor(age)+famrel+absences+G1+G2+G2*absences+G2*famrel+G1*G2+absences*G1+famrel*G1)
 summary(MInteraction2)
-# adds an interaction between family relationship and G2
+# adds an interaction between family relationship and G1 and G2
 
 
 
