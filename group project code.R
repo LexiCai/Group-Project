@@ -1,4 +1,4 @@
-setwd("/Users/yaxincai/Desktop/DSC 423/group project/student")
+setwd("/Users/yaxincai/Desktop/depaul/DSC 423/group project/student")
 
 math=read.csv("student-mat.csv",sep=";",header=T)
 
@@ -107,20 +107,29 @@ M6=lm(G3 ~  age +
         famrel + absences + G1 + G2)
 summary(M6)  # final model
 
+#forward selection
+Base=lm(G3~1)
+step(Base,scope=list(upper=M1,lower=~1),direction="forward")
+#Stepwise selection
+step(Base,scope=list(upper=M1,lower=~1),direction="both",trace=FALSE)
+#check model
+fit=lm(G3~G2+famrel+absences+G1+age+as.factor(activities)+Walc+as.factor(romantic)+as.factor(school))
+summary(fit)
+
 library(car)
 vif(M6)      # check multicollinearity
 # no multicollinearity across age, famrel, absences, G1, and G2
 library(QuantPsyc)
 lm.beta(M6)  #standardized coefficients,show the most important predictor
-
 ## Interaction model
 
 MInteraction1=lm(G3~age+famrel+absences+G1+G2+famrel*absences+famrel*G1+famrel*G2)
 summary(MInteraction1)
+lm.beta(MInteraction1)
 # There is an interaction between famely relationship and absences
 # perhaps because absences inconsistent is why G1 and G2 does not reflect interaction
 
-MInteraction2=lm(G3~as.factor(age)+famrel+absences+G1+G2+G2*absences+G2*famrel+G1*G2+absences*G1+famrel*G1)
+MInteraction2=lm(G3~age+famrel+absences+G1+G2+G2*absences+G2*famrel+G1*G2+absences*G1+famrel*G1)
 summary(MInteraction2)
 # adds an interaction between family relationship and G1 and G2
 
@@ -161,6 +170,8 @@ train.math <- math[select.math,]
 test.math <-math[-select.math]
 fit.train <- lm(G3~age+famrel+absences+G1+G2)
 summary(fit.train)
+
+
 # Confirms the model
 
 # test prediction
