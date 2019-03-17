@@ -133,7 +133,16 @@ MInteraction2=lm(G3~age+famrel+absences+G1+G2+G2*absences+G2*famrel+G1*G2+absenc
 summary(MInteraction2)
 # adds an interaction between family relationship and G1 and G2
 
-
+#correlationship
+cor(age,G3)
+cor(famrel,G3)
+cor(absences,G3)
+cor(G1,G3)
+cor(G2,G3)
+cor(Walc,G3)
+#check MSE, F-value
+anova(M6)
+anova(fit)
 
 library(leaps)
 
