@@ -69,6 +69,7 @@ G2 = math[,32]
 G3 = math[,33]
 plot(math,  main="Simple Scatterplot Matrix")
 
+
 M1=lm(G3~as.factor(school)+as.factor(sex)+age+as.factor(address)+as.factor(famsize)+as.factor(Pstatus)+Medu+Fedu+as.factor(Mjob)
       
       +as.factor(Fjob)+as.factor(reason)+as.factor(guardian)+traveltime+studytime+failures+as.factor(schoolsup)+as.factor(famsup)
@@ -170,6 +171,7 @@ qqline(rstandard(M6), col = 2)
 
 # adjusted R2 indicates that 83.15% of the variation of the final grade can be explained by the model containing family relations, absences, and grades in the first two periods
 
+
 # train and fit
 set.seed(34567)
 #create the training set and testing set
@@ -177,9 +179,25 @@ select.math <- sample(1:nrow(math), 0.75*nrow(math))
 train.math <- math[select.math,]
 # remaining data for test
 test.math <-math[-select.math]
-fit.train <- lm(G3~age+famrel+absences+G1+G2)
-summary(fit.train)
 
+#test M2 model
+fit <- lm(G3 ~ as.factor(school) + age + as.factor(activities) + 
+            as.factor(romantic) + famrel + Walc + absences + G1 + G2,data=train.math)
+summary(fit)
+y_pred<-predict.glm(fit,test.math)
+y_obs<-test.math[,"G3"]
+rmse_m2 <- sqrt((y_obs - y_pred)%*%(y_obs - y_pred)/nrow(test.math)) 
+rmse_m2
+
+#test M6 model
+
+fit2 <- lm(G3 ~ age + 
+             famrel + absences + G1 + G2, data=train.math)
+summary(fit2)
+y_pred2<-predict.glm(fit2,test.math)
+y_obs2<-test.math[,"G3"]
+rmse_m6 <- sqrt((y_obs2 - y_pred2)%*%(y_obs2 - y_pred2)/nrow(test.math)) 
+rmse_m6
 
 # Confirms the model
 
